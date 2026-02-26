@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heet Racing Game</title>
+<style>
+body { margin:0; overflow:hidden; background:#222; }
+canvas { background:#555; display:block; margin:auto; }
+#ui {
+ position:absolute;
+ top:10px;
+ left:10px;
+ color:white;
+ font-family:Arial;
+ font-size:18px;
+}
+button {
+ position:absolute;
+ bottom:20px;
+ width:80px;
+ height:80px;
+ font-size:30px;
+ opacity:0.7;
+}
+#left { left:20px; }
+#right { right:20px; }
+</style>
+</head>
+<body>
+
+<div id="ui">
+Score: <span id="score">0</span><br>
+Lap: <span id="lap">1</span>/3
+</div>
+
+<canvas id="gameCanvas" width="400" height="600"></canvas>
+
+<button id="left">⬅</button>
+<button id="right">➡</button>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let car = { x:180, y:500, width:40, height:70 };
+let obstacles = [];
+let speed = 4;
+let score = 0;
+let lap = 1;
+
+function drawCar() {
+ ctx.fillStyle = "red";
+ ctx.fillRect(car.x, car.y, car.width, car.height);
+}
+
+function drawObstacles() {
+ ctx.fillStyle = "yellow";
+ obstacles.forEach(o=>{
+   ctx.fillRect(o.x, o.y, 40, 70);
+ });
+}
+
+function updateObstacles() {
+ obstacles.forEach(o=>{
+   o.y += speed;
+   if(o.y > 600){
+     o.y = -100;
+     o.x = Math.random() * 360;
+     score++;
+     if(score % 10 === 0){
+       lap++;
+       speed++;
+     }
+   }
+   if(car.x < o.x + 40 &&
+      car.x + car.width > o.x &&
+      car.y < o.y + 70 &&
+      car.y + car.height > o.y){
+        alert("Game Over!");
+        document.location.reload();
+   }
+ });
+}
+
+function gameLoop(){
+ ctx.clearRect(0,0,400,600);
+ drawCar();
+ drawObstacles();
+ updateObstacles();
+ document.getElementById("score").innerText = score;
+ document.getElementById("lap").innerText = lap;
+ requestAnimationFrame(gameLoop);
+}
+
+for(let i=0;i<3;i++){
+ obstacles.push({
+   x: Math.random()*360,
+   y: Math.random()*-600
+ });
+}
+
+document.getElementById("left").ontouchstart =
+()=> car.x -= 30;
+
+document.getElementById("right").ontouchstart =
+()=> car.x += 30;
+
+document.addEventListener("keydown", e=>{
+ if(e.key==="ArrowLeft") car.x-=30;
+ if(e.key==="ArrowRight") car.x+=30;
+});
+
+gameLoop();
+</script>
+
+</body>
+</html>
