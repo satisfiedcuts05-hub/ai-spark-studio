@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ultimate AI Shorts Machine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      background: #ff416c;
+      color: white;
+      cursor: pointer;
+    }
+
+    textarea {
+      width: 95%;
+      height: 220px;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Ultimate AI Shorts Machine 🚀</h1>
+
+<input type="text" id="topic" placeholder="Enter Topic">
+<br>
+<button onclick="generate()">Generate Full Short</button>
+
+<h3>Complete YouTube Ready Content:</h3>
+<textarea id="outputBox"></textarea>
+<br>
+<button onclick="downloadAll()">Download Content</button>
+
+<script>
+
+function generate() {
+  var topic = document.getElementById("topic").value;
+
+  if(topic === "") {
+    alert("Enter topic first!");
+    return;
+  }
+
+  var hook = "STOP SCROLLING! 🔥 Did you know this about " + topic + "?";
+
+  var script =
+  hook + "\\n\\n" +
+  topic + " is something most people don't understand properly.\\n" +
+  "Here’s something interesting you should know.\\n" +
+  "This can completely change how you think!\\n\\n" +
+  "Follow for more powerful shorts! 🚀";
+
+  var title = topic + " Explained in 30 Seconds 🔥";
+  var hashtags = "#shorts #" + topic.replace(/ /g,"") + " #viral #facts";
+
+  var finalContent =
+  "TITLE:\\n" + title + "\\n\\n" +
+  "SCRIPT:\\n" + script + "\\n\\n" +
+  "HASHTAGS:\\n" + hashtags;
+
+  document.getElementById("outputBox").value = finalContent;
+}
+
+function downloadAll() {
+  var text = document.getElementById("outputBox").value;
+  var blob = new Blob([text], { type: "text/plain" });
+  var link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "youtube-short-content.txt";
+  link.click();
+}
+
+</script>
+
+</body>
+</html>
